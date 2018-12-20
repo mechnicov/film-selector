@@ -1,7 +1,7 @@
-current_path = File.dirname(__FILE__)
-require current_path + '/films.rb'
+require_relative 'lib/film_collection.rb'
 
-seans = Films.new(current_path + "/films/")
+current_path = File.dirname(__FILE__)
+seans = FilmCollection.new(current_path + "/data/")
 abort "Сегодня фильмов нет" if seans.films_library.empty?
 
 STDOUT.puts "Фильмы какого режиссера Вы хотите посмотреть?"

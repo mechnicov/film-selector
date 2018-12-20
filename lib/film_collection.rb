@@ -1,4 +1,4 @@
-class Films
+class FilmCollection
   attr_accessor :films_library, :offer
   attr_reader :directors_list
 
