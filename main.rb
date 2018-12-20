@@ -1,24 +1,20 @@
-require_relative 'lib/film_collection.rb'
+require_relative 'lib/film_collection'
+require_relative 'lib/film'
 
 current_path = File.dirname(__FILE__)
 collection = FilmCollection.new(current_path + '/data/')
 abort 'Сегодня фильмов нет' if collection.library.empty?
 
-STDOUT.puts 'Фильмы какого режиссера Вы хотите посмотреть?'
-
-collection.set_directors_list
+STDOUT.puts 'Фильмы какого режиссёра Вы хотите посмотреть?'
 
 STDOUT.puts collection.print_directors_list
 
-user_choose = nil
-until ("1".."#{collection.directors_list.length}").include? user_choose
+user_select = nil
+until ("1".."#{collection.directors_list.length}").include? user_select
   STDOUT.puts 'Введите цифру, соответствующую режиссёру'
-  user_choose = STDIN.gets.chomp
+  user_select = STDIN.gets.chomp
 end
-user_choose = user_choose.to_i - 1
-
-collection.offer_film(user_choose)
+user_select = user_select.to_i - 1
 
 STDOUT.puts 'Рекомендуем посмотреть:'
-STDOUT.puts "#{collection.offer[:director]} — #{collection.offer[:title]} " \
-  "(#{collection.offer[:year]})"
+STDOUT.puts collection.offer_film(user_select)
