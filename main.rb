@@ -1,20 +1,32 @@
 require_relative 'lib/film_collection'
 require_relative 'lib/film'
 
-current_path = File.dirname(__FILE__)
-collection = FilmCollection.new(current_path + '/data/')
-abort 'Сегодня фильмов нет' if collection.library.empty?
+source = nil
+until %w(и л).include? source
+  STDOUT.puts "Откуда Вы хотите получить информацию о фильме?\n" \
+              "- из (И)нтернета (актуальная информация)\n" \
+              "- из (л)окального хранилища (информация могла устареть)"
+  source = STDIN.gets.chomp.downcase
+end
 
-STDOUT.puts 'Фильмы какого режиссёра Вы хотите посмотреть?'
+if source == 'и'
+  STDOUT.puts 'Идёт обработка данных сайта kinopoisk.ru. Ожидайте окончания...'
+  collection = FilmCollection.from_kinopoisk
+  source = 'с сайта kinopoisk.ru'
+else
+  collection = FilmCollection.from_local
+  source = 'в папке data'
+end
 
-STDOUT.puts collection.print_directors_list
+abort "Произошла ошибка при обработке данных #{source}" if collection.nil?
+
+STDOUT.puts 'Фильм какого режиссёра Вы хотите посмотреть?', collection.directors_list
 
 user_select = nil
-until ("1".."#{collection.directors_list.length}").include? user_select
-  STDOUT.puts 'Введите цифру, соответствующую режиссёру'
+until ("1".."#{collection.directors.size}").include? user_select
+  STDOUT.puts 'Введите номер, соответствующий режиссёру'
   user_select = STDIN.gets.chomp
 end
 user_select = user_select.to_i - 1
-
-STDOUT.puts 'Рекомендуем посмотреть:'
+STDOUT.puts "\nРекомендуем посмотреть:"
 STDOUT.puts collection.offer_film(user_select)
