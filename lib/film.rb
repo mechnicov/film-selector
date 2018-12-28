@@ -1,7 +1,7 @@
 class Film
-  attr_reader :title, :country, :year, :director, :genre, :duration, :rating, :place, :link
+  attr_reader :title, :country, :year, :director, :genre, :duration, :rating, :place, :link, :params
 
-  def self.from_file(path)
+  def self.from_plain_text(path)
     lines = File.readlines(path, chomp: true)
     self.new(title:    lines[0],
              country:  lines[1],
@@ -24,6 +24,7 @@ class Film
     @rating   = params[:rating]
     @place    = params[:place]
     @link     = params[:link]
+    @params   = params
   end
 
   def to_s

@@ -1,10 +1,25 @@
 require 'open-uri'
 require 'nokogiri'
+require 'json'
 
 class FilmCollection
+  JSON_FILE = __dir__ + '/../data/.json'
+
   attr_reader :directors, :directors_list
 
-  def self.from_kinopoisk
+  def self.from_plain_text
+    library = Dir[__dir__ + '/../data/*.txt'].map { |path| Film.from_plain_text(path) }
+    return nil if library.empty?
+    self.new(library)
+  end
+
+  def self.from_json
+    library = JSON.parse(File.read(JSON_FILE), symbolize_names: true).map {|params| Film.new(params)}
+    return nil if library.empty?
+    self.new(library)
+  end
+
+  def self.read_kinopoisk
     url     = 'https://www.kinopoisk.ru/top/lists/1/filtr/all/sort/order/perpage/200/page/'
     library = { title: [], country: [], year: [], director: [], genre: [],
                 duration: [], rating: [], place: [], link: [] }
@@ -38,18 +53,22 @@ class FilmCollection
     end
 
     begin
-      library = library.map { |key, value| [key].product(value) }.transpose.map(&:to_h).map { |params| Film.new(params) }
+      @library = library.map { |k, v| [k].product(v) }.transpose.map(&:to_h).map { |params| Film.new(params) }
     rescue NoMethodError
-      return nil
+      @library = []
     end
-
-    self.new(library)
   end
 
-  def self.from_local
-    library =  Dir[__dir__ + '/../data/*.txt'].map { |path| Film.from_file(path) }
-    return nil if library.empty?
-    self.new(library)
+  def self.from_kinopoisk
+    self.read_kinopoisk
+    return nil if @library.empty?
+    self.new(@library)
+  end
+
+  def self.update_json
+    self.read_kinopoisk
+    return nil if @library.empty?
+    File.write(JSON_FILE, JSON.pretty_generate(@library.map(&:params)))
   end
 
   def initialize(library = [])

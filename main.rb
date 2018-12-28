@@ -1,24 +1,31 @@
 require_relative 'lib/film_collection'
 require_relative 'lib/film'
 
-source = nil
-until %w(и л).include? source
-  STDOUT.puts "Откуда Вы хотите получить информацию о фильме?\n" \
-              "- из (И)нтернета (актуальная информация)\n" \
-              "- из (л)окального хранилища (информация могла устареть)"
-  source = STDIN.gets.chomp.downcase
+source_id = nil
+until %w(и л о).include? source_id
+  STDOUT.puts "Что Вы хотите?\n" \
+              "- подобрать фильм из (И)нтернета\n" \
+              "- подобрать фильм из (л)окального хранилища (информация могла устареть)\n" \
+              "- (о)бновить локальное хранилище фильмов"
+  source_id = STDIN.gets.chomp.downcase
 end
 
-if source == 'и'
-  STDOUT.puts 'Идёт обработка данных сайта kinopoisk.ru. Ожидайте окончания...'
-  collection = FilmCollection.from_kinopoisk
-  source = 'с сайта kinopoisk.ru'
-else
-  collection = FilmCollection.from_local
-  source = 'в папке data'
-end
+STDOUT.puts 'Идёт обработка данных сайта kinopoisk.ru. Ожидайте окончания...' if source_id != 'л'
+
+collection = case source_id
+             when 'и' then FilmCollection.from_kinopoisk
+             when 'л' then FilmCollection.from_json
+             else FilmCollection.update_json
+             end
+
+source = if source_id == 'л'
+           'в папке data'
+         else
+           'с сайта kinopoisk.ru'
+         end
 
 abort "Произошла ошибка при обработке данных #{source}" if collection.nil?
+exit if source_id == 'о'
 
 STDOUT.puts 'Фильм какого режиссёра Вы хотите посмотреть?', collection.directors_list
 
