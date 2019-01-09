@@ -1,40 +1,32 @@
 require 'json'
 class FilmCollection
-  JSON_FILE = __dir__ + '/../data/.json'
-  TXT_PATH  = __dir__ + '/../data/*.txt'
   attr_reader :directors
 
-  def self.from_plain_text
-    library = Dir[TXT_PATH].map { |path| Film.from_plain_text(path) }
+  def self.from_plain_text(txt_path)
+    library = Dir[txt_path].map { |path| Film.from_plain_text(path) }
     return nil if library.empty?
     self.new(library)
   end
 
-  def self.from_json
-    library = JSON.parse(File.read(JSON_FILE), symbolize_names: true).map {|params| Film.new(params)}
+  def self.from_json(json_file)
+    library = JSON.parse(File.read(json_file), symbolize_names: true).map { |params| Film.new(params) }
     return nil if library.empty?
     self.new(library)
   end
 
   def self.from_kinopoisk
-    library = Parsable.read_kinopoisk
+    library = Kinopoisk.parse
     return nil if library.empty?
     self.new(library)
   end
 
-  def self.update_json
-    library = Parsable.read_kinopoisk
-    return nil if library.empty?
-    File.write(JSON_FILE, JSON.pretty_generate(library.map(&:params)))
-  end
-
   def initialize(library)
     @library = library
-    @directors = @library.map(&:director).uniq.shuffle
+    @directors = @library.map(&:director).uniq
   end
 
   def directors_list
-    list = directors.map.with_index { |value, index| "#{index + 1}. #{value}" }
+    list = directors.map.with_index(1) { |value, index| "#{index}. #{value}" }
 
     i = 10
     (directors.size / 10).times do
