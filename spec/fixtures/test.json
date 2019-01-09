@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Побег из Шоушенка",
+    "country": "США",
+    "year": "1994",
+    "director": "Фрэнк Дарабонт",
+    "genre": "драма",
+    "duration": "142 мин.",
+    "rating": "9.112",
+    "place": "1",
+    "link": "https://www.kinopoisk.ru/film/326/"
+  },
+  {
+    "title": "Зеленая миля",
+    "country": "США",
+    "year": "1999",
+    "director": "Фрэнк Дарабонт",
+    "genre": "фэнтези, драма, криминал",
+    "duration": "189 мин.",
+    "rating": "9.062",
+    "place": "2",
+    "link": "https://www.kinopoisk.ru/film/435/"
+  },
+  {
+    "title": "Форрест Гамп",
+    "country": "США",
+    "year": "1994",
+    "director": "Роберт Земекис",
+    "genre": "драма, мелодрама",
+    "duration": "142 мин.",
+    "rating": "8.916",
+    "place": "3",
+    "link": "https://www.kinopoisk.ru/film/448/"
+  }
+]
