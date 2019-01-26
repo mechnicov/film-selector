@@ -1,15 +1,16 @@
 require 'json'
-class FilmCollection
+class MoviesCollection
   attr_reader :directors
 
   def self.from_plain_text(txt_path)
-    library = Dir[txt_path].map { |path| Film.from_plain_text(path) }
+    library = Dir[txt_path].map { |path| Movie.from_plain_text(path) }
     return nil if library.empty?
     self.new(library)
   end
 
   def self.from_json(json_file)
-    library = JSON.parse(File.read(json_file), symbolize_names: true).map { |params| Film.new(params) }
+    library = JSON.parse(File.read(json_file), symbolize_names: true).
+                map { |params| Movie.new(params) }
     return nil if library.empty?
     self.new(library)
   end
@@ -36,7 +37,7 @@ class FilmCollection
     list
   end
 
-  def offer_film(user_select)
-    @library.select { |film| film.director == directors[user_select] }.sample
+  def offer_movie(user_select)
+    @library.select { |movie| movie.director == directors[user_select] }.sample
   end
 end

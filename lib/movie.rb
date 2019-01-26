@@ -1,5 +1,6 @@
-class Film
-  attr_reader :title, :country, :year, :director, :genre, :duration, :rating, :place, :link, :params
+class Movie
+  attr_reader :title, :country, :year, :director, :genre, :duration,
+              :rating, :place, :link, :params
 
   def self.from_plain_text(path)
     lines = File.readlines(path, chomp: true)
@@ -28,10 +29,11 @@ class Film
   end
 
   def to_s
-    "«#{title}» (#{country}, #{year}) – #{director}\n" \
-    "Жанр: #{genre}\n" \
-    "Продолжительность: #{duration}\n" \
-    "Рейтинг КиноПоиск: #{rating} (#{place} место) \n" \
-    "Подробнее: #{link}"
+    %Q(
+    «#{title}» (#{country}, #{year}) – #{director}
+    Жанр: #{genre}
+    Продолжительность: #{duration}
+    Рейтинг КиноПоиск: #{rating} (#{place} место)
+    Подробнее: #{link})
   end
 end

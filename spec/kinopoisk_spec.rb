@@ -1,8 +1,8 @@
 require 'kinopoisk'
 
-describe Kinopoisk do
+RSpec.describe Kinopoisk do
   describe '.parse' do
-    it 'should parse' do
+    it 'should parse pages correctly' do
       files = (1..2).map { |i| File.open("#{__dir__}/fixtures/kinopoisk/#{i}.html") }
       allow(Kinopoisk).to receive(:open_request).and_return *files
 

@@ -30,18 +30,18 @@ module Kinopoisk
         doc.
           css('td.news span.gray_text').
           map(&:content).
-          select.with_index { |content, index| index % 3 == 0 }.
+          select.with_index { |_, index| index % 3 == 0 }.
           map(&:strip).
           map { |info| info.split("\n") }
-      library[:country]  += info.map { |film| film[0].delete('.,') }
-      library[:director] += info.map { |film| film[1].strip.gsub('реж. ', '').chomp('...') }
-      library[:genre]    += info.map { |film| film[2].strip.delete('().') }
+      library[:country]  += info.map { |movie| movie[0].delete('.,') }
+      library[:director] += info.map { |movie| movie[1].strip.gsub('реж. ', '').chomp('...') }
+      library[:genre]    += info.map { |movie| movie[2].strip.delete('().') }
 
       html.close
     end
 
     begin
-      library = library.map { |k, v| [k].product(v) }.transpose.map(&:to_h).map { |params| Film.new(params) }
+      library = library.map { |k, v| [k].product(v) }.transpose.map(&:to_h).map { |params| Movie.new(params) }
     rescue NoMethodError
       library = []
     end
