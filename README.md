@@ -1,36 +1,36 @@
-## Фильм на вечер
+## Movie for tonight
 
-### Описание
+### Description
 
-Программа предлагает произвольный фильм выбранного пользователем режиссёра.
+The program offers random movie of chosen director.
 
-Может работать как локально, так и используя онлайн-данные ТОП-500 сайта kinopoisk.ru.
+It works both locally and using online data of TOP-500 from the kinopoisk.ru website.
 
-Реализована на Ruby. 
+Implemented in Ruby. Language: Russian.
 
-### Запуск
+### Launching
 
-Для запуска программы введите в консоли:
+To launch type in terminal:
 
 ```
 ruby main.rb
 ```
 
-### Актуализация локального списка
+### Local list updating
 
-Для актуализация запустите в консоли:
+To update type in terminal:
 
 ```
 ruby update_local.rb
 ```
 
-### Лицензия
+### License
 
-MIT – см. `LICENSE`
+MIT – see `LICENSE`
 
-### Контакты
+### Contacts
 
-Пишите мне по адресу
+Email me at
 
 ```
 'dcdl-snotynu?fl`hk-bnl'.each_char.map(&:succ).join
